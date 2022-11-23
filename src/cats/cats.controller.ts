@@ -5,14 +5,14 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  UseFilters,
+  SetMetadata,
   UseGuards,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cats.dto';
 import { Cat } from './interfaces/cat.interface';
-import { HttpExceptionFilter } from '../http-exception.filter';
-import { RolesGuard } from '../auth/roles.guard';
+import { RolesGuard } from '../roles/roles.guard';
+import { Roles } from '../roles/roles.decorators';
 
 @Controller('cats')
 @UseGuards(RolesGuard)
@@ -20,6 +20,7 @@ export class CatsController {
   constructor(private catsService: CatsService) {}
 
   @Post()
+  @Roles('admin')
   create(@Body() createCatDto: CreateCatDto) {
     this.catsService.create(createCatDto);
   }
